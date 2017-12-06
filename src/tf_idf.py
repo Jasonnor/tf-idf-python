@@ -1,5 +1,7 @@
 import jieba
 from math import log
+
+import os
 from operator import itemgetter
 
 class tf_idf:
@@ -70,13 +72,19 @@ class tf_idf:
 
 if __name__ == "__main__":
     table = tf_idf()
-    for x in range(1, 41):
-        file_name = '笑傲江湖/' + str(x).zfill(2) + '.txt'
+    folder_name = '出埃及記'
+    dir = os.path.dirname(__file__)
+    folder = os.path.join(dir, '../data/' + folder_name)
+    num_of_files = len([name for name in os.listdir(folder) if os.path.isfile(os.path.join(folder, name))]) + 1
+
+    for x in range(1, num_of_files):
+        file_name = folder_name + '/' + str(x).zfill(2) + '.txt'
         table.add_file(file_name)
 
     top_k = 20
-    target_file = '笑傲江湖/40.txt'
-    print('Top ' + str(top_k) +  ' of tf-idf in ' + target_file + ' : ')
-    table.get_tf_idf(target_file, top_k)
+    for x in range(1, num_of_files):
+        target_file = folder_name + '/' + str(x).zfill(2) + '.txt'
+        print('Top ' + str(top_k) +  ' of tf-idf in ' + target_file + ' : ')
+        table.get_tf_idf(target_file, top_k)
 
-    print(table.similarities(['令狐冲', '岳不群', '任我行']))
+    # print(table.similarities(['令狐冲', '岳不群', '任我行']))
