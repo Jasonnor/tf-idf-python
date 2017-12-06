@@ -1,6 +1,6 @@
 import jieba.analyse
 
-file_name = '../data/笑傲江湖/01.txt'
+file_name = '../data/笑傲江湖/40.txt'
 topK = 10
 content = open(file_name, 'rb').read()
 

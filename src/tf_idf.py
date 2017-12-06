@@ -70,9 +70,11 @@ class tf_idf:
 
 if __name__ == "__main__":
     table = tf_idf()
-
-    for x in range(1, 10):#41
+    for x in range(1, 41):
         file_name = '笑傲江湖/' + str(x).zfill(2) + '.txt'
         table.add_file(file_name)
 
-    table.get_tf_idf(file_name='笑傲江湖/02.txt', top_k=20)
+    top_k = 20
+    target_file = '笑傲江湖/40.txt'
+    print('Top ' + str(top_k) +  ' of tf-idf in ' + target_file + ' : ')
+    table.get_tf_idf(target_file, top_k)
