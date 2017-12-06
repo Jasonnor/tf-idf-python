@@ -3,24 +3,37 @@ from operator import itemgetter
 
 class tf_idf:
     def __init__(self):
-        self.weighted = False
-        self.documents = []
-        self.corpus_dict = {}
+        self.files = []
+        self.corpus = {}
+        self.stop_words = set(())
+        content = open('./dictionary/stop_words.txt', 'rb').read().decode('utf-8')
+        for line in content.splitlines():
+            self.stop_words.add(line)
 
-    def add_document(self, doc_name, list_of_words):
-        # building a dictionary
-        doc_dict = {}
-        for w in list_of_words:
-            doc_dict[w] = doc_dict.get(w, 0.) + 1.0
-            self.corpus_dict[w] = self.corpus_dict.get(w, 0.0) + 1.0
+    def add_file(self, file_name):
+        # Load data and cut
+        content = open('../data/' + file_name, 'rb').read()
+        words = jieba.lcut(content)
 
-        # normalizing the dictionary
-        length = float(len(list_of_words))
-        for k in doc_dict:
-            doc_dict[k] = doc_dict[k] / length
+        # Build dictionary
+        dictionary = {}
+        for w in words:
+            if len(w.strip()) < 2 or w.lower() in self.stop_words:
+                continue
+            dictionary[w] = dictionary.get(w, 0.0) + 1.0
+            self.corpus[w] = self.corpus.get(w, 0.0) + 1.0
 
-        # add the normalized document to the corpus
-        self.documents.append([doc_name, doc_dict])
+        # Get term frequency
+        total = sum(dictionary.values())
+        for k in dictionary:
+            dictionary[k] /= total
+
+        # Add tf to the corpus
+        self.files.append([file_name, dictionary])
+
+    def get_tf_idf(self, top_k):
+        tags = sorted(self.corpus.items(), key=itemgetter(1), reverse=True)
+        print(tags[:top_k])
 
     def similarities(self, list_of_words):
         # building the query dictionary
@@ -35,51 +48,21 @@ class tf_idf:
 
         # computing the list of similarities
         sims = []
-        for doc in self.documents:
+        for doc in self.files:
             score = 0.0
             doc_dict = doc[1]
             for k in query_dict:
                 if k in doc_dict:
-                    score += (query_dict[k] / self.corpus_dict[k]) + (
-                      doc_dict[k] / self.corpus_dict[k])
+                    score += (query_dict[k] / self.corpus[k]) + (
+                      doc_dict[k] / self.corpus[k])
             sims.append([doc[0], score])
 
         return sims
 
-
-def set_stop_words(self, stop_words_path):
-    abs_path = _get_abs_path(stop_words_path)
-    if not os.path.isfile(abs_path):
-        raise Exception("jieba: file does not exist: " + abs_path)
-    content = open(abs_path, 'rb').read().decode('utf-8')
-    for line in content.splitlines():
-        self.stop_words.add(line)
-
 if __name__ == "__main__":
-    stop_words = set(())
-    content = open('./dictionary/stop_words.txt', 'rb').read().decode('utf-8')
-    for line in content.splitlines():
-        stop_words.add(line)
+    table = tf_idf()
 
-    topK = 20
-    file_name = '../data/笑傲江湖/01.txt'
-    content = open(file_name, 'rb').read()
-    words = jieba.lcut(content)
-    freq = {}
-    for w in words:
-        if len(w.strip()) < 2 or w.lower() in stop_words:
-            continue
-        freq[w] = freq.get(w, 0.0) + 1.0
-    total = sum(freq.values())
+    file_name = '笑傲江湖/01.txt'
+    table.add_file(file_name)
 
-    print('、'.join(words))
-
-    # for k in freq:
-    #     freq[k] *= idf_freq.get(k, median_idf) / total
-
-    tags = sorted(freq.items(), key=itemgetter(1), reverse=True)
-    print(tags[:topK])
-
-    # table = tf_idf()
-    # table.add_document("foo", ["a", "b", "c", "d", "e", "f", "g", "h"])
-    # print(table.similarities(["a", "b", "c"]))
+    table.get_tf_idf(top_k=20)
