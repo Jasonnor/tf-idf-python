@@ -1,8 +1,8 @@
 import jieba
-from math import log
-
 import os
+from math import log
 from operator import itemgetter
+
 
 class tf_idf:
     def __init__(self):
@@ -71,6 +71,7 @@ class tf_idf:
 
         return sorted(sims, key=itemgetter(1), reverse=True)
 
+
 if __name__ == "__main__":
     table = tf_idf()
     folder_name = '笑傲江湖'
@@ -85,7 +86,7 @@ if __name__ == "__main__":
     top_k = 20
     for x in range(1, num_of_files):
         target_file = folder_name + '/' + str(x).zfill(2) + '.txt'
-        print('Top ' + str(top_k) +  ' of tf-idf in ' + target_file + ' : ')
+        print('Top ' + str(top_k) + ' of tf-idf in ' + target_file + ' : ')
         table.get_tf_idf(target_file, top_k)
         print()
 
