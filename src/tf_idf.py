@@ -69,7 +69,7 @@ class tf_idf:
                     score += (query_dict[k] / self.corpus[k]) + (self.files[f][k] / self.corpus[k])
             sims.append([f, score])
 
-        return sims
+        return sorted(sims, key=itemgetter(1), reverse=True)
 
 if __name__ == "__main__":
     table = tf_idf()
@@ -87,5 +87,6 @@ if __name__ == "__main__":
         target_file = folder_name + '/' + str(x).zfill(2) + '.txt'
         print('Top ' + str(top_k) +  ' of tf-idf in ' + target_file + ' : ')
         table.get_tf_idf(target_file, top_k)
+        print()
 
-    print(table.similarities(['令狐冲']))
+    print(table.similarities(['任我行']))
