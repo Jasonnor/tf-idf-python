@@ -24,7 +24,7 @@ class tf_idf:
             if len(w.strip()) < 2 or w.lower() in self.stop_words:
                 continue
             dictionary[w] = dictionary.get(w, 0.0) + 1.0
-            self.corpus[w] = 0.0
+            self.corpus[w] = self.corpus.get(w, 0.0) + 1.0
 
         # Get term frequency
         total = sum(dictionary.values())
@@ -36,6 +36,7 @@ class tf_idf:
 
     def get_tf_idf(self, file_name, top_k):
         # Get inverse document frequency
+        tf_idf_of_file = {}
         for w in self.corpus.keys():
             w_in_f = 1.0
             for f in self.files:
@@ -43,9 +44,9 @@ class tf_idf:
                     w_in_f += 1.0
             # Get tf-idf
             if w in self.files[file_name]:
-                self.corpus[w] = log(len(self.files) / w_in_f) * self.files[file_name][w]
+                tf_idf_of_file[w] = log(len(self.files) / w_in_f) * self.files[file_name][w]
         # Top-K result of tf-idf
-        tags = sorted(self.corpus.items(), key=itemgetter(1), reverse=True)
+        tags = sorted(tf_idf_of_file.items(), key=itemgetter(1), reverse=True)
         print(tags[:top_k])
 
     def similarities(self, list_of_words):
@@ -72,7 +73,7 @@ class tf_idf:
 
 if __name__ == "__main__":
     table = tf_idf()
-    folder_name = '出埃及記'
+    folder_name = '笑傲江湖'
     dir = os.path.dirname(__file__)
     folder = os.path.join(dir, '../data/' + folder_name)
     num_of_files = len([name for name in os.listdir(folder) if os.path.isfile(os.path.join(folder, name))]) + 1
@@ -87,4 +88,4 @@ if __name__ == "__main__":
         print('Top ' + str(top_k) +  ' of tf-idf in ' + target_file + ' : ')
         table.get_tf_idf(target_file, top_k)
 
-    # print(table.similarities(['令狐冲', '岳不群', '任我行']))
+    print(table.similarities(['令狐冲']))
