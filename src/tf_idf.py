@@ -14,7 +14,7 @@ class tf_idf:
     def add_file(self, file_name):
         # Load data and cut
         content = open('../data/' + file_name, 'rb').read()
-        words = jieba.lcut(content)
+        words = jieba.cut(content)
 
         # Build dictionary
         dictionary = {}
@@ -36,11 +36,13 @@ class tf_idf:
         # Get inverse document frequency
         for w in self.corpus.keys():
             w_in_f = 1.0
-            for dictionary in self.files:
-                if w in dictionary:
+            for f in self.files:
+                if w in self.files[f]:
                     w_in_f += 1.0
+            # Get tf-idf
             if w in self.files[file_name]:
                 self.corpus[w] = log(len(self.files) / w_in_f) * self.files[file_name][w]
+        # Top-K result of tf-idf
         tags = sorted(self.corpus.items(), key=itemgetter(1), reverse=True)
         print(tags[:top_k])
 
@@ -57,14 +59,12 @@ class tf_idf:
 
         # Get the list of similarities
         sims = []
-        for doc in self.files:
+        for f in self.files:
             score = 0.0
-            doc_dict = doc[1]
             for k in query_dict:
-                if k in doc_dict:
-                    score += (query_dict[k] / self.corpus[k]) + (
-                      doc_dict[k] / self.corpus[k])
-            sims.append([doc[0], score])
+                if k in self.files[f]:
+                    score += (query_dict[k] / self.corpus[k]) + (self.files[f][k] / self.corpus[k])
+            sims.append([f, score])
 
         return sims
 
@@ -78,3 +78,5 @@ if __name__ == "__main__":
     target_file = '笑傲江湖/40.txt'
     print('Top ' + str(top_k) +  ' of tf-idf in ' + target_file + ' : ')
     table.get_tf_idf(target_file, top_k)
+
+    print(table.similarities(['令狐冲', '岳不群', '任我行']))
