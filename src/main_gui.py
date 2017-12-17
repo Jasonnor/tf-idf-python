@@ -31,13 +31,15 @@ def execute():
     top_k = int(top_k)
     for x in range(1, num_of_files):
         target_file = folder_name + '/' + str(x).zfill(2) + '.txt'
-        var = 'Top ' + str(top_k) + ' of tf-idf in ' + os.path.basename(target_file) + ' : '
+        var = 'Top ' + str(top_k) + ' of tf-idf in ' + os.path.basename(target_file) + ' : \n'
         text_output.insert('end', var)
         var = table.get_tf_idf(target_file, top_k)
         text_output.insert('end', var)
         var = '\n\n'
         text_output.insert('end', var)
     keyword = entry_keyword.get()
+    var = 'tf-idf of key word "' + keyword + ' : \n'
+    text_output.insert('end', var)
     var = table.similarities([keyword])
     for x in var:
         x[0] = os.path.basename(x[0])
