@@ -36,7 +36,7 @@ def execute():
         text_output.insert('end', var)
         var = table.get_tf_idf(target_file, top_k)
         text_output.insert('end', var)
-        var = '\n'
+        var = '\n\n'
         text_output.insert('end', var)
     keyword = entry_keyword.get()
     var = table.similarities([keyword])
