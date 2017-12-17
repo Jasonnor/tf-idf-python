@@ -47,7 +47,7 @@ class tf_idf:
                 tf_idf_of_file[w] = log(len(self.files) / w_in_f) * self.files[file_name][w]
         # Top-K result of tf-idf
         tags = sorted(tf_idf_of_file.items(), key=itemgetter(1), reverse=True)
-        print(tags[:top_k])
+        return tags[:top_k]
 
     def similarities(self, list_of_words):
         # Building the query dictionary
@@ -87,7 +87,7 @@ if __name__ == "__main__":
     for x in range(1, num_of_files):
         target_file = folder_name + '/' + str(x).zfill(2) + '.txt'
         print('Top ' + str(top_k) + ' of tf-idf in ' + target_file + ' : ')
-        table.get_tf_idf(target_file, top_k)
+        print(table.get_tf_idf(target_file, top_k))
         print()
 
     print(table.similarities(['任我行']))
