@@ -26,7 +26,6 @@ def execute():
     num_of_files = len([name for name in os.listdir(folder) if os.path.isfile(os.path.join(folder, name))]) + 1
     for x in range(1, num_of_files):
         file_name = folder_name + '/' + str(x).zfill(2) + '.txt'
-        print(file_name)
         table.add_file(file_name)
     top_k = entry_top_k.get()
     top_k = int(top_k)
