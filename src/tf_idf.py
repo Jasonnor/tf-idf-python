@@ -15,7 +15,7 @@ class tf_idf:
 
     def add_file(self, file_name):
         # Load data and cut
-        content = open(file_name, 'rb').read()
+        content = open(file_name, 'rb').read() if file_name[0] == '/' else open('../data/' + file_name, 'rb').read()
         words = jieba.cut(content)
 
         # Build dictionary
@@ -71,3 +71,25 @@ class tf_idf:
 
         return sorted(sims, key=itemgetter(1), reverse=True)
 
+
+if __name__ == "__main__":
+    table = tf_idf()
+    folder_name = '笑傲江湖'
+    dir = os.path.dirname(__file__)
+    folder = os.path.join(dir, '../data/' + folder_name)
+    num_of_files = len([name for name in os.listdir(folder) if os.path.isfile(os.path.join(folder, name))]) + 1
+
+    for x in range(1, num_of_files):
+        file_name = folder_name + '/' + str(x).zfill(2) + '.txt'
+        table.add_file(file_name)
+
+    top_k = 20
+    for x in range(1, num_of_files):
+        target_file = folder_name + '/' + str(x).zfill(2) + '.txt'
+        print('Top ' + str(top_k) + ' of tf-idf in ' + target_file + ' : ')
+        print(table.get_tf_idf(target_file, top_k))
+        print()
+
+    key_word = '任我行'
+    print('tf-idf of key word "' + key_word + ' : ')
+    print(table.similarities([key_word]))

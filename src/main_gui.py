@@ -13,8 +13,8 @@ main_window.geometry("1300x520")
 def open_filedialog():
     global folder
     folder = tkfd.askdirectory(initialdir=os.path.dirname(__file__) + '/..', )
-    entry_dirname.delete(0, tk.END)
-    entry_dirname.insert(0, folder)
+    entry_dir_name.delete(0, tk.END)
+    entry_dir_name.insert(0, folder)
     print(folder)
     return 0
 
@@ -28,7 +28,7 @@ def execute():
         file_name = folder_name + '/' + str(x).zfill(2) + '.txt'
         print(file_name)
         table.add_file(file_name)
-    top_k = entry_topk.get()
+    top_k = entry_top_k.get()
     top_k = int(top_k)
     for x in range(1, num_of_files):
         target_file = folder_name + '/' + str(x).zfill(2) + '.txt'
@@ -46,39 +46,41 @@ def execute():
     return 0
 
 
-label_dirname = tk.Label(main_window,
-                         text='TXT Dir name:',
-                         font=('Arial', 12),
-                         width=15,
-                         height=1,
-                         ).grid(row=0, column=0)
-entry_dirname = tk.Entry(main_window, width=100)
-entry_dirname.grid(row=0, column=1)
+if __name__ == "__main__":
+    label_dir_name = tk.Label(main_window,
+                              text='TXT Dir name:',
+                              font=('Arial', 12),
+                              width=15,
+                              height=1,
+                              ).grid(row=0, column=0)
+    entry_dir_name = tk.Entry(main_window, width=100)
+    entry_dir_name.grid(row=0, column=1)
 
-label_keyword = tk.Label(main_window,
-                         text='Searching keyword:',
-                         font=('Arial', 12),
-                         width=15,
-                         height=1,
-                         ).grid(row=2, column=0)
-entry_keyword = tk.Entry(main_window, width=100)
-entry_keyword.insert(0, '任我行')
-entry_keyword.grid(row=2, column=1)
+    label_keyword = tk.Label(main_window,
+                             text='Searching keyword:',
+                             font=('Arial', 12),
+                             width=15,
+                             height=1,
+                             ).grid(row=2, column=0)
+    entry_keyword = tk.Entry(main_window, width=100)
+    entry_keyword.insert(0, '任我行')
+    entry_keyword.grid(row=2, column=1)
 
-label_topk = tk.Label(main_window,
-                      text='Top K:',
-                      font=('Arial', 12),
-                      width=15,
-                      height=1,
-                      ).grid(row=3, column=0)
-entry_topk = tk.Entry(main_window, width=100)
-entry_topk.insert(0, '20')
-entry_topk.grid(row=3, column=1)
+    label_top_k = tk.Label(main_window,
+                           text='Top K:',
+                           font=('Arial', 12),
+                           width=15,
+                           height=1,
+                           ).grid(row=3, column=0)
+    entry_top_k = tk.Entry(main_window, width=100)
+    entry_top_k.insert(0, '20')
+    entry_top_k.grid(row=3, column=1)
 
-button_execute = tk.Button(main_window, text="Execute", width=15, height=1, command=execute).grid(row=3, column=2)
-button_file = tk.Button(main_window, text="Browse", width=15, height=1, command=open_filedialog).grid(row=0, column=2)
+    button_execute = tk.Button(main_window, text="Execute", width=15, height=1, command=execute).grid(row=3, column=2)
+    button_file = tk.Button(main_window, text="Browse", width=15, height=1, command=open_filedialog).grid(row=0,
+                                                                                                          column=2)
 
-text_output = tk.Text(main_window, width=180, height=33)
-text_output.grid(row=4, column=0, columnspan=3)
+    text_output = tk.Text(main_window, width=180, height=33)
+    text_output.grid(row=4, column=0, columnspan=3)
 
-main_window.mainloop()
+    main_window.mainloop()
