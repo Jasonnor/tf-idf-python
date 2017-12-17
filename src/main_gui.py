@@ -62,6 +62,7 @@ label_keyword = tk.Label(main_window,
                          height=1,
                          ).grid(row=2, column=0)
 entry_keyword = tk.Entry(main_window, width=100)
+entry_keyword.insert(0, '任我行')
 entry_keyword.grid(row=2, column=1)
 
 label_topk = tk.Label(main_window,
@@ -71,6 +72,7 @@ label_topk = tk.Label(main_window,
                       height=1,
                       ).grid(row=3, column=0)
 entry_topk = tk.Entry(main_window, width=100)
+entry_topk.insert(0, '20')
 entry_topk.grid(row=3, column=1)
 
 button_execute = tk.Button(main_window, text="Execute", width=15, height=1, command=execute).grid(row=3, column=2)
