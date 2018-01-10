@@ -1,13 +1,14 @@
 import tkinter as tk
 import tkinter.filedialog as tkfd
 import os
+from tkinter.scrolledtext import ScrolledText
 from tf_idf import tf_idf
 
 table = tf_idf()
 
 main_window = tk.Tk()
 main_window.title("TD-IDF")
-main_window.geometry("1300x520")
+main_window.geometry("1250x620")
 
 
 def open_filedialog():
@@ -49,8 +50,8 @@ def execute():
 
 if __name__ == "__main__":
     label_dir_name = tk.Label(main_window,
-                              text='TXT Dir name:',
-                              font=('Arial', 12),
+                              text='TXT Folder name:',
+                              font=('Microsoft YaHei', 12),
                               width=15,
                               height=1,
                               ).grid(row=0, column=0)
@@ -58,8 +59,8 @@ if __name__ == "__main__":
     entry_dir_name.grid(row=0, column=1)
 
     label_keyword = tk.Label(main_window,
-                             text='Searching keyword:',
-                             font=('Arial', 12),
+                             text='Searching Keyword:',
+                             font=('Microsoft YaHei', 12),
                              width=15,
                              height=1,
                              ).grid(row=2, column=0)
@@ -69,7 +70,7 @@ if __name__ == "__main__":
 
     label_top_k = tk.Label(main_window,
                            text='Top K:',
-                           font=('Arial', 12),
+                           font=('Microsoft YaHei', 12),
                            width=15,
                            height=1,
                            ).grid(row=3, column=0)
@@ -81,7 +82,9 @@ if __name__ == "__main__":
     button_file = tk.Button(main_window, text="Browse", width=15, height=1, command=open_filedialog).grid(row=0,
                                                                                                           column=2)
 
-    text_output = tk.Text(main_window, width=180, height=33)
-    text_output.grid(row=4, column=0, columnspan=3)
+    text_output = ScrolledText(main_window, width=135, height=25, undo=True, font=('Microsoft YaHei', 12))
+    text_output.grid(row=4, column=0, columnspan=4)
+    text_output.tag_add("start", "1.8", "1.13")
+    text_output.tag_config("start", background="black", foreground="white")
 
     main_window.mainloop()
