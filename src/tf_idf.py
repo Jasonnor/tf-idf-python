@@ -15,7 +15,7 @@ class tf_idf:
 
     def add_file(self, file_name):
         # Load data and cut
-        content = open(file_name, 'rb').read() if file_name[0] == '/' else open('../data/' + file_name, 'rb').read()
+        content = open(file_name, 'rb').read() if file_name[0] == '/' or file_name[0] == 'C' else open('../data/' + file_name, 'rb').read()
         words = jieba.cut(content)
 
         # Build dictionary
